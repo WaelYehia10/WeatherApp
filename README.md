@@ -5,4 +5,4 @@ A flutter weather app project.
 DIB Dominic, 
 ESTEPHAN Charbel, 
 MTEINY Maroun, 
-Yehya Wael, 
+Yehya Wael
