@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 import '../models/weather_model.dart';
 import 'package:http/http.dart' as http;
@@ -29,7 +30,7 @@ class WeatherService{
     Position position= await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high
     );
-    List<Placemark> placemarks= await placemarkfromCoordinates(position.latitude, position.longitude);
+    List<Placemark> placemarks= await placemarkFromCoordinates(position.latitude, position.longitude);
 
     String? city= placemarks[0].locality;
     return city ?? "";
