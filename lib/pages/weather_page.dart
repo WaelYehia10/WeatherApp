@@ -11,7 +11,7 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  final _weatherService = WeatherService(apiKey);
+  final _weatherService = WeatherService('d48fd97064a6408f8ed110923241403');
   Weather? _weather;
 
   _fetchWeather() async {
@@ -21,18 +21,18 @@ class _WeatherPageState extends State<WeatherPage> {
       setState(() {
         _weather = weather;
       });
-    }
-
-    catch (e) {
+    } catch (e) {
       print(e);
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _fetchWeather();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
