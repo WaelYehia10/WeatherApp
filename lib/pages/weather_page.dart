@@ -1,11 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/services/weather_service.dart';
-
 import '../models/weather_model.dart';
 
 class WeatherPage extends StatefulWidget {
-  const WeatherPage({super.key});
+  const WeatherPage({Key? key}) : super(key: key);
 
   @override
   State<WeatherPage> createState() => _WeatherPageState();
@@ -14,6 +14,27 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   final _weatherService = WeatherService('d48fd97064a6408f8ed110923241403');
   Weather? _weather;
+  late Timer _timer;
+  late DateTime _currentTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchWeather();
+    _currentTime = DateTime.now();
+    // Update the clock every second
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _currentTime = DateTime.now();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer to avoid memory leaks
+    super.dispose();
+  }
 
   _fetchWeather() async {
     String cityName = await _weatherService.getCurrentCity();
@@ -51,13 +72,6 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _fetchWeather();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -67,7 +81,12 @@ class _WeatherPageState extends State<WeatherPage> {
             Text(_weather?.cityName ?? "loading city.."),
             Lottie.asset(getWeatherAnimation(_weather?.mainCondition)),
             Text('${_weather?.temperature.round()}°C'),
-            Text(_weather?.mainCondition ?? "")
+            Text(_weather?.mainCondition ?? ""),
+            SizedBox(height: 20),
+            Text(
+              '${_currentTime.hour}:${_currentTime.minute}:${_currentTime.second}',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),
